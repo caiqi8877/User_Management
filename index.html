@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<style>
+img{
+  height:10px;
+  width:10px;
+}
+</style>
+<body ng-app="myApp" ng-controller="userCtrl">
+
+<div class="container">
+
+<h3>Users</h3>
+
+<input class="form-control" style="width:200px" type="text" ng-model="keyWord" placeholder="search here">
+
+<table class="table table-striped">
+  <thead><tr>
+    <th>Edit</th>
+ 
+    <th>First Name <img src="arrow.png" ng-click="order='fName'"></img></th>
+    <th>Last Name <img src="arrow.png" ng-click="order='LName'" ></img></th>
+    <th>Sex <img src="arrow.png" ng-click="order='sex'"></img></th>
+    <th>Age <img src="arrow.png" ng-click="order='age'"></img></th>
+  </tr></thead>
+  <tbody><tr ng-repeat="user in users | startFrom:currentPage*pageSize | limitTo:pageSize  | filter: keyWord | orderBy: order">
+    <td width="220px">
+      <button class="btn btn-warning" ng-click="editUser(user)">
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+      </button>
+      <button class="btn btn-danger" ng-click="deleteUser(user)" ng-show="user.myVar">
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Delete
+      </button>
+    </td>
+    <td>{{ user.fName }}</td>
+    <td>{{ user.lName }}</td>
+    <td>{{ user.sex }}</td>
+    <td>{{ user.age }}</td>
+  </tr></tbody>
+</table>
+
+<button style="margin-left:962px" class="btn btn-info" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        Previous
+    </button>
+    {{currentPage+1}} / {{numberOfPages()}}
+<button class="btn btn-info" ng-disabled="currentPage >= users.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        Next
+</button>
+
+<hr>
+
+
+<h3 ng-show="flag">Create New User:</h3>
+<h3 ng-hide="flag">Edit User:</h3>
+
+<form class="form-horizontal">
+<div class="form-group">
+  <label class="col-sm-2 control-label">First Name:</label>
+  <div class="col-sm-10">
+    <input class="form-control" style="width:200px" type="text" ng-model="fName" ng-disabled="!edit" placeholder="First Name">
+  </div>
+</div> 
+<div class="form-group">
+  <label class="col-sm-2 control-label">Last Name:</label>
+  <div class="col-sm-10">
+    <input class="form-control" style="width:200px" type="text" ng-model="lName" ng-disabled="!edit" placeholder="Last Name">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2 control-label">sex:</label>
+  <div class="col-sm-10">
+    <input type="radio" value="male" ng-model="sex" ng-disabled="!edit" > male </input>
+    <input type="radio" value="female" ng-model="sex" ng-disabled="!edit" > female</input>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2 control-label">age:</label>
+  <div class="col-sm-10">
+    <input class="form-control" style="width:200px" type="text" ng-model="age" ng-disabled="!edit" placeholder="age">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2 control-label">Password:</label>
+  <div class="col-sm-10">
+    <input class="form-control" style="width:200px" type="password" ng-model="passw1" placeholder="Password">
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2 control-label">Repeat:</label>
+  <div class="col-sm-10">
+    <input class="form-control" style="width:200px" type="password" ng-model="passw2" placeholder="Repeat Password">
+  </div>
+</div>
+</form>
+<button class="btn btn-success" ng-click="createUser(fName, lName, sex, age)" ng-disabled="error || incomplete">
+  <span class="glyphicon glyphicon-user"></span> Create New User
+</button>
+<button style="margin-left:100px"ng-click="saveUser(fName, lName, sex, age)" class="btn btn-success" ng-disabled="error || incomplete || !currentUser.myVar">
+  <span class="glyphicon glyphicon-save"></span> Save Changes
+</button>
+<hr>
+</div>
+
+<script src = "myUsers.js"></script>
+
+</body>
+</html>
